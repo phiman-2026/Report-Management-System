@@ -1,0 +1,3063 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="ระบบจัดเก็บรายงาน Report Management System โรงเรียนพิมานพิทยาสรรค์">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phiman-2026/picture/main/logo%20phiman.png">
+
+<title>ระบบจัดเก็บรายงาน Report Management System</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+
+:root{
+    --primary:#1E40AF;
+    --primary-dark:#1E3A8A;
+    --gold:#60A5FA;
+    --bg:#F8FAFC;
+    --text:#0F172A;
+    --text-light:#64748B;
+    --border:#CBD5E1;
+    --radius:18px;
+}
+
+/* =========================
+   RESET
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Prompt',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+.d-none{
+    display:none !important;
+}
+
+/* =========================
+   APP LAYOUT
+========================= */
+.app-container{
+    width:100%;
+    min-height:100vh;
+    padding-top:85px;
+    padding-bottom:95px;
+}
+
+.content-wrap{
+    max-width:1400px;
+    margin:auto;
+    padding:15px;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#CBD5E1;
+    border-radius:20px;
+}
+
+/* =========================
+   LOADING SCREEN
+========================= */
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.loading-logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
+    object-fit: contain;
+}
+
+.loading-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.loading-bar-container {
+    width: 100%;
+    max-width: 250px;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.loading-bar-progress {
+    width: 40%;
+    height: 100%;
+    background: #1E40AF;
+    border-radius: 10px;
+    animation: loadingMove 1.5s infinite ease-in-out;
+}
+
+.loading-sub {
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+@keyframes loadingMove {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+}
+
+
+/* =========================
+   HEADER
+========================= */
+.mobile-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    gap: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,.08);
+    z-index: 1000;
+}
+
+.logo-box {
+    flex-shrink: 0;
+}
+
+.logo-box img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+}
+
+.system-title {
+    display: none !important;
+}
+
+.search-box {
+    flex: 1;
+    height: 42px;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.add-btn {
+    width: 45px !important;
+    height: 45px !important;
+    border: none;
+    border-radius: 14px;
+    background: #1E40AF !important;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    padding: 0 !important;
+}
+
+@media(min-width: 992px) {
+    .mobile-header {
+        height: 90px;
+        padding: 0 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        background: linear-gradient(135deg, rgba(71, 85, 105, 0.9), rgba(51, 65, 85, 0.9)),
+                    url("https://raw.githubusercontent.com/phiman-2026/picture/main/Picindex.png");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .mobile-header::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #1E3A8A, #1E40AF, #1E3A8A);
+        box-shadow: 0 0 8px rgba(30, 64, 175, 0.5);
+    }
+
+    .logo-box img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .system-title {
+        display: block !important;
+        color: #fff;
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+    .system-title h1 { font-size: 1.1rem !important; font-weight: 800 !important; color: #fff !important; margin: 0 !important; }
+    .system-title p { font-size: 0.75rem !important; color: rgba(255, 255, 255, 0.8) !important; margin: 0 !important; }
+
+    .search-box {
+        flex: 1;
+        max-width: 800px;
+        height: 45px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: #fff !important;
+        margin-left: 20px;
+    }
+
+    .search-box span { color: #fff !important; }
+
+    .add-btn {
+        margin-left: auto;
+        width: 45px !important;
+        height: 45px !important;
+        background: #1E40AF !important;
+        color: #FFFFFF !important;
+        flex-shrink: 0;
+        border: none !important;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(30, 64, 175, 0.3);
+    }
+
+    .add-btn:hover {
+        background: #1E3A8A !important;
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(30, 64, 175, 0.5);
+    }
+
+    .app-container {
+        padding-top: 100px !important;
+    }
+}
+
+/* =========================
+   SEARCH SCREEN
+========================= */
+.search-screen{
+    position:fixed;
+    inset:0;
+    background:#F8FAFC;
+    z-index:3000;
+    overflow-y:auto;
+}
+
+.search-header{
+    position:sticky;
+    top:0;
+    background:#fff;
+    display:flex;
+    gap:10px;
+    padding:15px;
+    box-shadow:0 2px 15px rgba(0,0,0,.08);
+}
+
+.search-header input{
+    flex:1;
+    height:45px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:#F1F5F9;
+    padding:0 15px;
+}
+
+.search-back-btn{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:12px;
+    background:#F1F5F9;
+}
+
+.search-filter-panel {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-select:focus {
+    border-color: #1E40AF;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.filter-label{
+    display:block;
+    margin-top:10px;
+    font-size:.9rem;
+    font-weight:600;
+}
+
+.cards-grid {
+    display: grid;
+    gap: 20px;
+    padding: 10px;
+    grid-template-columns: 1fr;
+}
+@media(min-width: 768px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(min-width: 1200px) { .cards-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.empty-box {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.2rem;
+    color: #94a3b8;
+}
+
+.section-title{
+    font-weight:800;
+    font-size:1.15rem;
+    margin:10px 0 15px;
+    color:#1e293b;
+}
+
+/* =========================
+   SECTION FILTER BAR (subgroup filter in tab pages)
+========================= */
+.section-filter-bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    padding:12px 16px;
+    border-radius:14px;
+    margin:0 10px 20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+    flex-wrap:wrap;
+}
+
+.section-filter-bar .filter-label{
+    margin:0;
+    white-space:nowrap;
+    font-size:.85rem;
+}
+
+.section-filter-bar .filter-select{
+    flex:1;
+    min-width:180px;
+    max-width:320px;
+}
+
+/* =========================
+   SUBGROUP BLOCKS
+========================= */
+.subgroup-block{
+    margin-bottom:28px;
+}
+
+.subgroup-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:1rem;
+    color:#1e293b;
+    background:#fff;
+    padding:10px 16px;
+    border-radius:12px;
+    margin:0 10px 14px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+}
+
+.subgroup-title .subgroup-count{
+    margin-left:auto;
+    font-size:.8rem;
+    font-weight:600;
+    color:#fff;
+    padding:2px 10px;
+    border-radius:20px;
+}
+
+/* =========================
+   CARD SYSTEM
+========================= */
+.report-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 0;
+    overflow: hidden;
+    transition: 0.3s;
+    border: 1px solid #eee;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.report-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.card-header-icon {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color:#fff;
+    font-size: 2.4rem;
+    overflow: visible;
+    border-radius: 20px 20px 0 0;
+}
+
+.card-header-icon .card-header-img,
+.card-header-icon::after {
+    border-radius: 20px 20px 0 0;
+}
+
+.card-header-icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.45) 100%);
+    pointer-events: none;
+}
+
+.card-header-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.card-badge-code {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.35);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.card-badge-group {
+    background: #ffffff !important;
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.72rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid #ffffff;
+    z-index: 2;
+    white-space: nowrap;
+    max-width: 90%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.card-body-content {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.report-title {
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    height: 45px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #1e293b;
+}
+
+.report-meta {
+    text-align: left;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.report-meta p {
+    margin: 3px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-view-report {
+    margin-top: auto;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    filter: brightness(1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btn-view-report:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    filter: brightness(1.1);
+}
+
+.btn-view-report:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* =========================
+   FORM MODAL
+========================= */
+.report-form-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    padding: 10px;
+}
+
+.report-form-container {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    max-height: 90vh;
+    background: #fff;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+.report-form-header {
+    background: #1E40AF;
+    color: #fff;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-form-header h5 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.report-form-header button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.report-form-header button:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.report-form-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 25px;
+    background: #f8fafc;
+}
+
+.report-form-body label.form-label {
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control, .form-select {
+    padding: 12px 15px !important;
+    border-radius: 12px !important;
+    border: 1px solid #cbd5e1 !important;
+    font-size: 0.95rem;
+    width: 100%;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #1E40AF !important;
+    box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.1) !important;
+}
+
+#pdfPreview {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.form-action-bar {
+    padding: 20px 25px;
+    background: #fff;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-save, .btn-cancel {
+    flex: 1;
+    height: 50px;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-save {
+    background: #1E40AF;
+    color: #fff;
+}
+
+.btn-save:hover {
+    background: #1E3A8A;
+    box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+}
+
+.btn-cancel {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.btn-cancel:hover {
+    background: #cbd5e1;
+}
+
+@media(max-width: 768px) {
+    .report-form-container {
+        border-radius: 24px 24px 0 0;
+        height: 90vh;
+        margin-top: auto;
+    }
+}
+
+/* =========================
+   TAB BAR
+========================= */
+.bottom-tabbar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:auto;
+    background:#fff;
+    display:flex;
+    justify-content:space-around;
+    align-items:stretch;
+    gap:6px;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    border-top:1px solid #eef1f5;
+    border-radius:20px 20px 0 0;
+    box-shadow:0 -6px 24px rgba(15,23,42,0.08);
+    z-index:1000;
+}
+
+.tab-item{
+    flex:1;
+    background:none;
+    border:none;
+    font-size:11.5px;
+    font-weight:600;
+    color:var(--text-light);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:6px 2px 8px;
+    border-radius:16px;
+    -webkit-tap-highlight-color:transparent;
+    cursor:pointer;
+    transition:color .2s ease, background .2s ease, transform .12s ease;
+}
+
+.tab-icon-wrap{
+    width:42px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    font-size:18px;
+    color:inherit;
+    transition:background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.tab-item span.tab-label{
+    line-height:1;
+    letter-spacing:.1px;
+}
+
+.tab-item:active{
+    transform:scale(0.94);
+}
+
+@media(hover:hover){
+    .tab-item:not(.active):hover{
+        color:var(--primary);
+        background:rgba(30,64,175,0.06);
+    }
+}
+
+.tab-item.active{
+    color:var(--primary);
+}
+
+.tab-item.active .tab-icon-wrap{
+    background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color:#fff;
+    transform:translateY(-3px);
+    box-shadow:0 8px 16px rgba(30,64,175,0.35);
+}
+
+.tab-item.active span.tab-label{
+    font-weight:800;
+}
+
+#toastBox{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:99999;
+}
+
+/* =========================
+   ACCESSIBILITY / FOCUS STATES
+========================= */
+.search-box:focus-visible,
+.add-btn:focus-visible,
+.tab-item:focus-visible,
+.search-back-btn:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid #1E40AF !important;
+    outline-offset: 2px;
+}
+
+.search-box[role="button"]{
+    cursor:pointer;
+}
+
+/* =========================
+   FORM VALIDATION
+========================= */
+.form-control.is-invalid, .form-select.is-invalid {
+    border-color: #dc2626 !important;
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.12) !important;
+}
+
+.required-star{
+    color:#dc2626;
+    margin-left:3px;
+}
+
+/* =========================
+   SKELETON LOADER (cards)
+========================= */
+.skeleton-card{
+    background:#fff;
+    border-radius:20px;
+    height:260px;
+    border:1px solid #eee;
+    overflow:hidden;
+    position:relative;
+}
+.skeleton-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%);
+    background-size:400% 100%;
+    animation:skeletonShine 1.4s ease infinite;
+}
+@keyframes skeletonShine{
+    0%{background-position:100% 50%;}
+    100%{background-position:0 50%;}
+}
+
+/* =========================
+   STATS / SUMMARY
+========================= */
+.stats-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin-bottom:20px;
+}
+.stat-card{
+    background:#fff;
+    border-radius:16px;
+    padding:14px 10px;
+    text-align:center;
+    border:1px solid #eee;
+    box-shadow:0 4px 12px rgba(0,0,0,0.04);
+}
+.stat-card .stat-num{
+    font-size:1.4rem;
+    font-weight:800;
+    color:#1e293b;
+}
+.stat-card .stat-label{
+    font-size:0.75rem;
+    color:#64748b;
+    font-weight:600;
+}
+
+/* =========================
+   LOAD ERROR / RETRY
+========================= */
+.load-error-box{
+    text-align:center;
+    padding:50px 20px;
+    color:#64748b;
+}
+.btn-retry{
+    margin-top:12px;
+    background:#1E40AF;
+    color:#fff;
+    border:none;
+    padding:10px 24px;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+/* =========================
+   SWEETALERT Z-INDEX FIX
+========================= */
+.swal2-container {
+    z-index: 9999999 !important;
+}
+
+/* =========================
+   ADMIN LOGIN BUTTON / BADGE
+========================= */
+.admin-btn {
+    width: 45px !important;
+    height: 45px !important;
+    border: none;
+    border-radius: 14px;
+    background: #F1F5F9 !important;
+    color: #1E40AF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: 0.3s;
+    padding: 0 !important;
+}
+
+.admin-btn:hover{
+    background:#e2e8f0 !important;
+}
+
+@media(min-width: 992px){
+    .admin-btn{
+        background: rgba(255,255,255,0.15) !important;
+        color:#fff;
+    }
+    .admin-btn:hover{
+        background: rgba(255,255,255,0.3) !important;
+    }
+}
+
+.admin-badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#EFF6FF;
+    border:1px solid #BFDBFE;
+    color:#1E40AF;
+    padding:6px 10px 6px 14px;
+    border-radius:50px;
+    font-size:0.8rem;
+    font-weight:700;
+    flex-shrink:0;
+    white-space:nowrap;
+}
+
+@media(min-width: 992px){
+    .admin-badge{
+        background: rgba(255,255,255,0.15);
+        border:1px solid rgba(255,255,255,0.3);
+        color:#fff;
+    }
+}
+
+.admin-badge .admin-logout-btn{
+    width:26px;
+    height:26px;
+    border:none;
+    border-radius:50%;
+    background:rgba(30,64,175,0.1);
+    color:#1E40AF;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.75rem;
+    flex-shrink:0;
+}
+
+@media(min-width: 992px){
+    .admin-badge .admin-logout-btn{
+        background:rgba(255,255,255,0.2);
+        color:#fff;
+    }
+}
+
+/* =========================
+   ADMIN LOGIN MODAL
+========================= */
+.admin-login-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:999999;
+    padding:15px;
+}
+
+.admin-login-box{
+    width:100%;
+    max-width:380px;
+    background:#fff;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+
+.admin-login-header{
+    background:#1E40AF;
+    color:#fff;
+    padding:25px;
+    text-align:center;
+}
+
+.admin-login-header i{
+    font-size:2rem;
+    margin-bottom:10px;
+    display:block;
+}
+
+.admin-login-header h5{
+    margin:0;
+    font-weight:700;
+}
+
+.admin-login-body{
+    padding:25px;
+}
+
+.admin-login-body .form-label{
+    font-weight:600;
+    color:#334155;
+    margin-bottom:6px;
+    display:block;
+}
+
+.admin-login-footer{
+    padding:0 25px 25px;
+    display:flex;
+    gap:12px;
+}
+
+.admin-login-footer button{
+    flex:1;
+    height:48px;
+    border-radius:12px;
+    font-weight:700;
+    border:none;
+    transition:0.3s;
+}
+
+.btn-admin-login{
+    background:#1E40AF;
+    color:#fff;
+}
+
+.btn-admin-login:hover{
+    background:#1E3A8A;
+}
+
+.btn-admin-cancel{
+    background:#e2e8f0;
+    color:#475569;
+}
+
+.btn-admin-cancel:hover{
+    background:#cbd5e1;
+}
+
+/* =========================
+   CARD ADMIN ACTIONS (EDIT/DELETE)
+========================= */
+.card-admin-actions{
+    display:flex;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.card-admin-actions button{
+    flex:1;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    font-weight:700;
+    font-size:0.82rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-card-edit{
+    background:#EFF6FF;
+    color:#1E40AF;
+}
+
+.btn-card-edit:hover{
+    background:#DBEAFE;
+}
+
+.btn-card-delete{
+    background:#FEF2F2;
+    color:#DC2626;
+}
+
+.btn-card-delete:hover{
+    background:#FEE2E2;
+}
+
+/* =========================
+   ADMIN: MEMBER MANAGEMENT
+========================= */
+.member-manage-btn{
+    width:45px !important;
+    height:45px !important;
+    border:none;
+    border-radius:14px;
+    background:#F1F5F9 !important;
+    color:#1E40AF;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    transition:0.3s;
+    padding:0 !important;
+}
+
+.member-manage-btn:hover{
+    background:#e2e8f0 !important;
+}
+
+@media(min-width: 992px){
+    .member-manage-btn{
+        background: rgba(255,255,255,0.15) !important;
+        color:#fff;
+    }
+    .member-manage-btn:hover{
+        background: rgba(255,255,255,0.3) !important;
+    }
+}
+
+.member-list-toolbar{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:15px;
+}
+
+.btn-member-add{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#1E40AF;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:10px 18px;
+    font-weight:700;
+    font-size:0.9rem;
+    transition:0.3s;
+}
+
+.btn-member-add:hover{
+    background:#1E3A8A;
+}
+
+.member-card{
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
+    padding:16px 18px;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.member-card-avatar{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:#EFF6FF;
+    color:#1E40AF;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.2rem;
+    flex-shrink:0;
+}
+
+.member-card-info{
+    flex:1;
+    min-width:0;
+}
+
+.member-card-name{
+    font-weight:700;
+    color:#0F172A;
+    font-size:0.95rem;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.member-card-meta{
+    font-size:0.8rem;
+    color:#64748B;
+    margin-top:2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.member-role-pill{
+    display:inline-block;
+    font-size:0.7rem;
+    font-weight:700;
+    padding:2px 10px;
+    border-radius:50px;
+    margin-top:4px;
+}
+
+.member-role-pill.role-super{
+    background:#FEF3C7;
+    color:#92400E;
+}
+
+.member-role-pill.role-group{
+    background:#DBEAFE;
+    color:#1E40AF;
+}
+
+.member-card-actions{
+    display:flex;
+    gap:8px;
+    flex-shrink:0;
+}
+
+.member-card-actions button{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:0.3s;
+}
+
+.btn-member-edit{
+    background:#EFF6FF;
+    color:#1E40AF;
+}
+
+.btn-member-edit:hover{
+    background:#DBEAFE;
+}
+
+.btn-member-delete{
+    background:#FEF2F2;
+    color:#DC2626;
+}
+
+.btn-member-delete:hover{
+    background:#FEE2E2;
+}
+
+.member-empty{
+    text-align:center;
+    color:#94A3B8;
+    padding:40px 20px;
+    font-size:0.9rem;
+}
+</style>
+
+
+</head>
+<body>
+
+<div id="loading-screen" class="loading-screen">
+  <div class="loading-content">
+    <img src="https://raw.githubusercontent.com/phiman-2026/picture/main/logo%20phiman.png" class="loading-logo" alt="โลโก้โรงเรียนพิมานพิทยาสรรค์" width="90" height="90">
+    <div class="loading-title">ระบบจัดเก็บรายงาน Report Management System</div>
+    <div class="loading-bar-container">
+      <div class="loading-bar-progress"></div>
+    </div>
+    <div class="loading-sub">กำลังโหลดข้อมูล...</div>
+  </div>
+</div>
+
+<div class="app-container">
+<header class="mobile-header">
+  <div class="logo-box">
+    <img src="https://raw.githubusercontent.com/phiman-2026/picture/main/logo%20phiman.png" alt="โลโก้โรงเรียนพิมานพิทยาสรรค์" width="45" height="45">
+  </div>
+
+  <div class="system-title">
+    <h1>ระบบจัดเก็บรายงาน Report Management System</h1>
+    <p>โรงเรียนพิมานพิทยาสรรค์</p>
+  </div>
+
+  <div class="search-box" role="button" tabindex="0" aria-label="เปิดหน้าค้นหารายงาน"
+       onclick="openSearchScreen()"
+       onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSearchScreen();}">
+     <i class="fa-solid fa-magnifying-glass"></i>
+     <span>ค้นหารายงาน...</span>
+  </div>
+
+ <div class="header-actions" style="display:flex; align-items:center; gap:10px;">
+  <div id="admin-area" style="display:flex; align-items:center; gap:10px;">
+    <button class="admin-btn" id="admin-login-trigger" onclick="openAdminLoginModal()" aria-label="เข้าสู่ระบบแอดมิน" title="เข้าสู่ระบบแอดมิน">
+      <i class="fa-solid fa-user-shield"></i>
+    </button>
+  </div>
+  <button class="add-btn" onclick="openReportForm()" aria-label="เพิ่มรายงานใหม่" title="เพิ่มรายงานใหม่">
+    <i class="fa-solid fa-plus"></i>
+  </button>
+</div>
+</header>
+
+  <main class="content-wrap">
+    <div id="app-content"></div>
+  </main>
+</div>
+
+<div id="search-screen" class="search-screen d-none">
+  <div class="search-header">
+    <button class="search-back-btn" onclick="closeSearchScreen()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <input id="search-input" placeholder="ค้นหาชื่อรายงาน, หัวหน้าโครงการ, ผู้บันทึก..." onkeyup="searchReports()">
+  </div>
+
+  <div class="search-filter-panel">
+    <div class="filter-group">
+      <label class="filter-label">ปีการศึกษา</label>
+      <select id="filter-year" onchange="searchReports()" class="filter-select">
+        <option value="all">ทั้งหมด</option>
+        <option value="2570">2570</option>
+        <option value="2569">2569</option>
+        <option value="2568">2568</option>
+        <option value="2567">2567</option>
+        <option value="2566">2566</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">ประเภท</label>
+      <select id="filter-type" onchange="onFilterTypeChange()" class="filter-select">
+        <option value="all">ทั้งหมด</option>
+        <option value="workgroup">กลุ่มงาน</option>
+        <option value="subject">กลุ่มสาระ</option>
+        <option value="special">ห้องเรียนพิเศษ</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">กลุ่มย่อย</label>
+      <select id="filter-group" onchange="searchReports()" class="filter-select">
+        <option value="all">ทั้งหมด</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="search-result-container" style="padding: 15px;"></div>
+</div>
+
+<div id="reportFormModal" class="report-form-modal d-none" onclick="if(event.target===this)closeReportForm()">
+  <div class="report-form-container">
+    <div class="report-form-header">
+      <h5 id="reportFormTitle">บันทึกรายงานใหม่</h5>
+      <button onclick="closeReportForm()">✕</button>
+    </div>
+    <div class="report-form-body">
+      <form id="reportForm">
+        <input type="hidden" id="reportEditId" value="">
+        <div style="display: flex; flex-wrap: wrap; gap: 15px; width: 100%;">
+
+          <div style="flex: 1 1 200px;">
+            <label class="form-label">ประเภทรายงาน</label>
+            <select id="reportType" class="form-select" onchange="changeReportType()">
+              <option value="workgroup">กลุ่มงาน</option>
+              <option value="subject">กลุ่มสาระ</option>
+              <option value="special">ห้องเรียนพิเศษ</option>
+            </select>
+          </div>
+
+          <div style="flex: 1 1 150px;">
+            <label class="form-label">ปีการศึกษา<span class="required-star">*</span></label>
+            <input id="reportYear" type="number" value="2569" min="2500" max="2700" class="form-control">
+          </div>
+
+        </div>
+
+        <div id="reportGroupArea" class="mt-3">
+          <label class="form-label">กลุ่มย่อย<span class="required-star">*</span></label>
+          <select id="reportGroup" class="form-select"></select>
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">ชื่อรายงาน<span class="required-star">*</span></label>
+          <input id="reportTitle" type="text" class="form-control" placeholder="กรอกชื่อรายงาน" maxlength="200">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">วัน/เดือน/ปี ที่จัด<span class="required-star">*</span></label>
+          <input id="reportDate" type="date" class="form-control">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">หัวหน้าโครงการ/กิจกรรม<span class="required-star">*</span></label>
+          <input id="reportLeader" type="text" class="form-control" placeholder="กรอกชื่อหัวหน้าโครงการ/กิจกรรม" maxlength="100">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">ผู้บันทึกรายงาน<span class="required-star">*</span></label>
+          <input id="reportRecorder" type="text" class="form-control" placeholder="กรอกชื่อผู้บันทึกรายงาน" maxlength="100">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label" id="reportFileLabel">ไฟล์รายงาน PDF<span class="required-star">*</span></label>
+          <input id="reportFile" type="file" accept=".pdf,application/pdf" class="form-control" onchange="previewPDFName()">
+          <div id="pdfPreview" class="mt-2 text-success fw-semibold"></div>
+        </div>
+      </form>
+    </div>
+    <div class="form-action-bar">
+      <button class="btn-cancel" onclick="closeReportForm()">ยกเลิก</button>
+      <button id="btn-save" class="btn-save" onclick="saveReport()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<div id="adminLoginModal" class="admin-login-modal d-none" onclick="if(event.target===this)closeAdminLoginModal()">
+  <div class="admin-login-box">
+    <div class="admin-login-header">
+      <i class="fa-solid fa-user-shield"></i>
+      <h5>เข้าสู่ระบบแอดมิน</h5>
+    </div>
+    <div class="admin-login-body">
+      <div class="mb-3">
+        <label class="form-label">ชื่อผู้ใช้</label>
+        <input id="adminUsername" type="text" class="form-control" placeholder="กรอกชื่อผู้ใช้" autocomplete="username">
+      </div>
+      <div>
+        <label class="form-label">รหัสผ่าน</label>
+        <input id="adminPassword" type="password" class="form-control" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
+      </div>
+    </div>
+    <div class="admin-login-footer">
+      <button class="btn-admin-cancel" onclick="closeAdminLoginModal()">ยกเลิก</button>
+      <button id="btn-admin-login" class="btn-admin-login" onclick="adminLogin()">เข้าสู่ระบบ</button>
+    </div>
+  </div>
+</div>
+
+<div id="memberModal" class="report-form-modal d-none" onclick="if(event.target===this)closeMemberManagement()">
+  <div class="report-form-container">
+    <div class="report-form-header">
+      <h5>จัดการสมาชิก (แอดมิน)</h5>
+      <button onclick="closeMemberManagement()">✕</button>
+    </div>
+    <div class="report-form-body">
+      <div class="member-list-toolbar">
+        <button class="btn-member-add" onclick="openMemberForm('add')">
+          <i class="fa-solid fa-user-plus"></i> เพิ่มสมาชิก
+        </button>
+      </div>
+      <div id="memberListContainer">
+        <div class="member-empty">
+          <i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="memberFormModal" class="report-form-modal d-none" onclick="if(event.target===this)closeMemberForm()">
+  <div class="report-form-container">
+    <div class="report-form-header">
+      <h5 id="memberFormTitle">เพิ่มสมาชิกใหม่</h5>
+      <button onclick="closeMemberForm()">✕</button>
+    </div>
+    <div class="report-form-body">
+      <form id="memberForm">
+        <input type="hidden" id="memberOriginalUsername" value="">
+
+        <div class="mt-3">
+          <label class="form-label">ชื่อผู้ใช้ (username)<span class="required-star">*</span></label>
+          <input id="memberUsername" type="text" class="form-control" placeholder="กรอกชื่อผู้ใช้" maxlength="60" autocomplete="off">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label" id="memberPasswordLabel">รหัสผ่าน<span class="required-star">*</span></label>
+          <input id="memberPassword" type="password" class="form-control" placeholder="กรอกรหัสผ่าน" autocomplete="new-password">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">ชื่อที่แสดงผล</label>
+          <input id="memberDisplayName" type="text" class="form-control" placeholder="ชื่อ-นามสกุล หรือชื่อเล่น" maxlength="100">
+        </div>
+
+        <div class="mt-3">
+          <label class="form-label">สิทธิ์การใช้งาน<span class="required-star">*</span></label>
+          <select id="memberRole" class="form-select" onchange="changeMemberRole()">
+            <option value="super">แอดมินใหญ่ (ดูแล/แก้ไข/ลบได้ทุกกลุ่ม)</option>
+            <option value="group">แอดมินกลุ่มย่อย (ดูแลได้เฉพาะกลุ่มที่กำหนด)</option>
+          </select>
+        </div>
+
+        <div id="memberScopeArea" class="d-none">
+          <div class="mt-3">
+            <label class="form-label">ประเภทกลุ่ม<span class="required-star">*</span></label>
+            <select id="memberScopeType" class="form-select" onchange="changeMemberScopeType()">
+              <option value="workgroup">กลุ่มงาน</option>
+              <option value="subject">กลุ่มสาระ</option>
+              <option value="special">ห้องเรียนพิเศษ</option>
+            </select>
+          </div>
+          <div class="mt-3">
+            <label class="form-label">กลุ่มย่อยที่ดูแล<span class="required-star">*</span></label>
+            <select id="memberScopeGroup" class="form-select"></select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="form-action-bar">
+      <button class="btn-cancel" onclick="closeMemberForm()">ยกเลิก</button>
+      <button id="btn-member-save" class="btn-save" onclick="saveMember()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-tabbar">
+  <button class="tab-item active" id="nav-home" onclick="changeTab('home')">
+    <span class="tab-icon-wrap"><i class="fa-solid fa-house"></i></span><span class="tab-label">หน้าแรก</span>
+  </button>
+  <button class="tab-item" id="nav-workgroup" onclick="changeTab('workgroup')">
+    <span class="tab-icon-wrap"><i class="fa-solid fa-building"></i></span><span class="tab-label">กลุ่มงาน</span>
+  </button>
+  <button class="tab-item" id="nav-subject" onclick="changeTab('subject')">
+    <span class="tab-icon-wrap"><i class="fa-solid fa-book"></i></span><span class="tab-label">กลุ่มสาระ</span>
+  </button>
+  <button class="tab-item" id="nav-special" onclick="changeTab('special')">
+    <span class="tab-icon-wrap"><i class="fa-solid fa-star"></i></span><span class="tab-label">ห้องเรียนพิเศษ</span>
+  </button>
+</nav>
+
+<div id="toastBox"></div>
+
+<div id="line-notice" style="display:none; position: fixed; top: 0; left: 0; width: 100%; background: #fee2e2; padding: 15px; text-align: center; z-index: 99999; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <p style="margin: 0; font-size: 0.9rem; color: #991b1b; margin-bottom: 10px;">
+        ใช้งานผ่านเบราว์เซอร์จะแสดงผลได้ดีกว่า คุณต้องการเปิดในเบราว์เซอร์ไหม?
+    </p>
+    <div style="display: flex; gap: 10px; justify-content: center;">
+        <button onclick="openInBrowser()" style="background: #1E40AF; color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+            เปิดใน Browser
+        </button>
+        <button onclick="hideNoticePermanently()" style="background: #e2e8f0; color: #475569; border: none; padding: 8px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+            ใช้ใน LINE ต่อ
+        </button>
+    </div>
+</div>
+
+</body>
+<script>
+const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWMBvPki3rsdtbY_x5j5fTiW3g2URaJ_lUMCW52WsVVQ2PaZw2TNukpWofN_3oRJ-wEQ/exec";
+// =========================
+// GROUP CONFIG
+// =========================
+const GROUPS = {
+  workgroup: {
+    title: "กลุ่มงาน",
+    icon: "fa-building",
+    color: "#1E40AF",
+    image: "https://img2.pic.in.th/5eeb98ad-357b-4e6b-b481-c2bd56b2d4e7.png",
+    options: [
+      "กลุ่มบริหารวิชาการ",
+      "กลุ่มบริหารงบประมาณ",
+      "กลุ่มบริหารงานบุคลล",
+      "กลุ่มบริหารทั่วไป",
+      "กลุ่มกิจการนักเรียน",
+      "สำนักงานอำนวยการ"
+    ]
+  },
+  subject: {
+    title: "กลุ่มสาระ",
+    icon: "fa-book",
+    color: "#990000",
+    image: "https://img1.pic.in.th/images/5e2917ec-710f-40ea-a4b1-7f2daf3c8c92.png",
+    options: [
+      "ภาษาไทย",
+      "คณิตศาสตร์",
+      "วิทยาศาสตร์และเทคโนโลยี",
+      "สังคมศึกษา ศาสนา และวัฒนธรรม",
+      "ภาษาต่างประเทศ",
+      "สุขศึกษาและพลศึกษา",
+      "ศิลปะ",
+      "การงานอาชีพ",
+      "กิจกรรมพัฒนาผู้เรียน",
+      "บูรณาการ"
+    ]
+  },
+  special: {
+    title: "ห้องเรียนพิเศษ",
+    icon: "fa-star",
+    color: "#CD8500",
+    image: "https://img1.pic.in.th/images/2e69a177-87c4-47bf-a96e-4f1dafb09100.png",
+    options: [
+      "ห้องเรียนพิเศษ EP",
+      "ห้องเรียนพิเศษ SMAP",
+      "ห้องเรียนพิเศษ CEP"
+    ]
+  }
+};
+
+let filters = {
+  year: "all"
+};
+
+let allReportsData = []; // flat array of report rows from tbl_reports
+
+let currentTab = "home";
+
+/* =========================
+   ADMIN SESSION STATE
+========================= */
+// adminSession = { token, username, role, scopeType, scopeGroup, displayName }
+let adminSession = null;
+
+let currentTabGroupFilter = {
+  workgroup: "all",
+  subject: "all",
+  special: "all"
+};
+
+/* =========================
+   INIT
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem('hideLineNotice') === 'true') {
+        document.getElementById('line-notice').style.display = 'none';
+    } else {
+        checkLineBrowser();
+    }
+    restoreAdminSession();
+    initApp();
+
+    // ปิด modal / หน้าค้นหาด้วยปุ่ม Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      if (!document.getElementById("reportFormModal").classList.contains("d-none")) {
+        closeReportForm();
+      } else if (!document.getElementById("adminLoginModal").classList.contains("d-none")) {
+        closeAdminLoginModal();
+      } else if (!document.getElementById("search-screen").classList.contains("d-none")) {
+        closeSearchScreen();
+      }
+    });
+
+    // กด Enter ในช่องรหัสผ่านแอดมินเพื่อเข้าสู่ระบบ
+    document.getElementById("adminPassword").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); adminLogin(); }
+    });
+
+    // เคลียร์กรอบสีแดงทันทีที่ผู้ใช้เริ่มแก้ไขข้อมูล
+    ["reportGroup", "reportYear", "reportTitle", "reportDate", "reportLeader", "reportRecorder", "reportFile"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener("input", () => el.classList.remove("is-invalid"));
+        el.addEventListener("change", () => el.classList.remove("is-invalid"));
+      });
+
+    // ค้นหาแบบ debounce เพื่อลดการ render ถี่เกินไป
+    const searchInput = document.getElementById("search-input");
+    let searchDebounce;
+    searchInput.removeAttribute("onkeyup");
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(searchReports, 250);
+    });
+});
+
+async function initApp() {
+  showLoadingScreen();
+  try {
+    const ok = await loadReports();
+    if (ok) {
+      renderHomePage();
+    } else {
+      renderLoadErrorState();
+    }
+  } finally {
+    hideLoadingScreen();
+  }
+}
+
+/* =========================
+   LOAD DATA
+========================= */
+async function loadReports() {
+  try {
+    const res = await fetch(GAS_WEB_APP_URL);
+    if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+    const data = await res.json();
+    allReportsData = data.reports || [];
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+function renderLoadErrorState() {
+  const zone = document.getElementById("app-content");
+  zone.innerHTML = `
+    <div class="load-error-box">
+      <i class="fa-solid fa-plug-circle-xmark" style="font-size:2.4rem; color:#94a3b8;"></i>
+      <p style="margin-top:12px; font-weight:600;">ไม่สามารถเชื่อมต่อฐานข้อมูลได้</p>
+      <p style="font-size:0.85rem;">กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ตแล้วลองใหม่อีกครั้ง</p>
+      <button class="btn-retry" onclick="retryLoad()">
+        <i class="fa-solid fa-rotate-right"></i> ลองใหม่
+      </button>
+    </div>`;
+}
+
+async function retryLoad() {
+  showLoadingScreen();
+  try {
+    const ok = await loadReports();
+    if (ok) {
+      renderHomePage();
+    } else {
+      renderLoadErrorState();
+      Swal.fire({
+        icon: "error",
+        title: "โหลดข้อมูลไม่สำเร็จ",
+        text: "ไม่สามารถเชื่อมต่อฐานข้อมูลได้ กรุณาลองใหม่ภายหลัง",
+        confirmButtonColor: "#1E40AF"
+      });
+    }
+  } finally {
+    hideLoadingScreen();
+  }
+}
+
+/* =========================
+   LOADING
+========================= */
+function showLoadingScreen() {
+  document.getElementById("loading-screen").style.display = "flex";
+}
+
+function hideLoadingScreen() {
+  const loader = document.getElementById("loading-screen");
+  loader.style.transition = "opacity 0.5s ease";
+  loader.style.opacity = "0";
+  setTimeout(() => {
+    loader.style.display = "none";
+  }, 500);
+}
+
+/* =========================
+   HOME
+========================= */
+function renderHomePage() {
+  const zone = document.getElementById("app-content");
+  zone.innerHTML = "";
+
+  renderSection("workgroup", 4);
+  renderSection("subject", 4);
+  renderSection("special", 4);
+}
+
+/* =========================
+   helper: get reports of a type
+========================= */
+function getReportsByType(type) {
+  return allReportsData.filter(r => r["ประเภท"] === type).slice().reverse();
+}
+
+/* =========================
+   SECTION + CARDS (MAIN)
+========================= */
+function renderSection(type, limit = null, page = 1) {
+  const zone = document.getElementById("app-content");
+  const groupInfo = GROUPS[type];
+  let data = getReportsByType(type);
+
+  // กรองด้วยปีการศึกษา (Filter หลักของระบบ)
+  data = data.filter(item => {
+    return filters.year === "all" || (item["ปีการศึกษา"] || "").toString() == filters.year;
+  });
+
+  zone.insertAdjacentHTML("beforeend", `
+    <div class="section-title"><i class="fa-solid ${groupInfo.icon}"></i> ${groupInfo.title}</div>
+  `);
+
+  if (data.length === 0) {
+    zone.insertAdjacentHTML("beforeend", `
+      <div class="empty-box" style="padding: 30px 0; text-align: center; color: #94a3b8; font-weight: 500;">
+        <i class="fa-solid fa-folder-open" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+        ไม่มีข้อมูลรายงาน
+      </div>
+    `);
+    return;
+  }
+
+  // หน้าแรก (มี limit) แสดงเป็นการ์ดรวมล่าสุด ไม่ต้องแยกกลุ่มย่อย
+  if (limit) {
+    const displayData = data.slice(0, limit);
+    zone.insertAdjacentHTML("beforeend", `<div class="cards-grid mb-4" id="row-${type}"></div>`);
+    const row = document.getElementById(`row-${type}`);
+    buildCards(row, displayData, type);
+
+    if (data.length > limit) {
+      row.insertAdjacentHTML("afterend", `
+        <div class="text-center mb-5">
+            <button onclick="changeTab('${type}')" style="background: none; border: 1px solid #1E40AF; color: #1E40AF; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: 600;">
+                ดูเพิ่มเติม...
+            </button>
+        </div>
+      `);
+    }
+    return;
+  }
+
+  // แท็บเต็ม: มีตัวกรองกลุ่มย่อยให้เลือกดูเฉพาะกลุ่มที่ต้องการ
+  const activeGroupFilter = currentTabGroupFilter[type] || "all";
+
+  zone.insertAdjacentHTML("beforeend", `
+    <div class="section-filter-bar">
+      <label class="filter-label" for="subgroup-filter-${type}">กรองกลุ่มย่อย</label>
+      <select id="subgroup-filter-${type}" class="filter-select" onchange="onSectionGroupFilterChange('${type}', this.value)">
+        <option value="all" ${activeGroupFilter === "all" ? "selected" : ""}>ทั้งหมด</option>
+        ${groupInfo.options.map(opt => `<option value="${opt}" ${activeGroupFilter === opt ? "selected" : ""}>${opt}</option>`).join("")}
+      </select>
+    </div>
+  `);
+
+  // จัดกลุ่มย่อยให้เป็นระเบียบ แยกเป็นบล็อกตามกลุ่มย่อยแทนสรุปจำนวนหรือรายการเดียวยาวๆ
+  const usedGroupNames = new Set();
+  let anyBlockShown = false;
+
+  groupInfo.options.forEach((groupName, idx) => {
+    usedGroupNames.add(groupName);
+
+    // ถ้าเลือกตัวกรองไว้เฉพาะกลุ่ม ให้ข้ามกลุ่มอื่นที่ไม่ตรง
+    if (activeGroupFilter !== "all" && activeGroupFilter !== groupName) return;
+
+    const groupData = data.filter(item => (item["กลุ่มย่อย"] || "").toString().trim() === groupName);
+    if (groupData.length === 0) return;
+
+    anyBlockShown = true;
+    zone.insertAdjacentHTML("beforeend", `
+      <div class="subgroup-block">
+        <div class="subgroup-title" style="border-left:4px solid ${groupInfo.color};">
+          ${groupName}
+          <span class="subgroup-count" style="background:${groupInfo.color};">${groupData.length} รายการ</span>
+        </div>
+        <div class="cards-grid mb-4" id="row-${type}-${idx}"></div>
+      </div>
+    `);
+
+    buildCards(document.getElementById(`row-${type}-${idx}`), groupData, type);
+  });
+
+  // รายการที่ไม่มีกลุ่มย่อยตรงกับที่กำหนดไว้ ให้รวมไว้ในหมวด "อื่นๆ" ท้ายสุด เพื่อความเป็นระเบียบ (แสดงเฉพาะตอนไม่ได้กรอง)
+  if (activeGroupFilter === "all") {
+    const otherData = data.filter(item => !usedGroupNames.has((item["กลุ่มย่อย"] || "").toString().trim()));
+    if (otherData.length > 0) {
+      anyBlockShown = true;
+      zone.insertAdjacentHTML("beforeend", `
+        <div class="subgroup-block">
+          <div class="subgroup-title" style="border-left:4px solid #94a3b8;">
+            อื่นๆ
+            <span class="subgroup-count" style="background:#94a3b8;">${otherData.length} รายการ</span>
+          </div>
+          <div class="cards-grid mb-4" id="row-${type}-other"></div>
+        </div>
+      `);
+      buildCards(document.getElementById(`row-${type}-other`), otherData, type);
+    }
+  }
+
+  if (!anyBlockShown) {
+    zone.insertAdjacentHTML("beforeend", `
+      <div class="empty-box" style="padding: 30px 0; text-align: center; color: #94a3b8; font-weight: 500;">
+        <i class="fa-solid fa-folder-open" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+        ไม่มีข้อมูลรายงานในกลุ่มย่อยนี้
+      </div>
+    `);
+  }
+}
+
+/* =========================
+   SUBGROUP FILTER (tab pages)
+========================= */
+function onSectionGroupFilterChange(type, value) {
+  currentTabGroupFilter[type] = value;
+  document.getElementById("app-content").innerHTML = "";
+  renderSection(type, null, 1);
+}
+
+/* =========================
+   CARD BUILDER
+========================= */
+function buildCards(container, data, type) {
+  const config = GROUPS[type];
+
+  data.forEach(item => {
+    const title = item["ชื่อรายงาน"] || "-";
+    const year = item["ปีการศึกษา"] || "-";
+    const eventDate = formatThaiDate(item["วันที่จัด"]);
+    const leader = item["หัวหน้าโครงการ/กิจกรรม"] || "-";
+    const recorder = item["ผู้บันทึกรายงาน"] || "-";
+    const groupName = item["กลุ่มย่อย"] || "-";
+    const pdfUrl = item["ลิงก์ไฟล์รายงาน"] || "";
+    const code = item["รหัส"] || "";
+
+    container.insertAdjacentHTML(
+      "beforeend",
+      createCardHTML(type, title, groupName, year, eventDate, leader, recorder, config, pdfUrl, code)
+    );
+  });
+}
+
+function formatThaiDate(value) {
+  if (!value) return "-";
+  try {
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return value.toString();
+    return d.toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch (e) {
+    return value.toString();
+  }
+}
+
+/* =========================
+   CARD HTML
+========================= */
+function createCardHTML(type, title, groupName, year, eventDate, leader, recorder, config, pdfUrl, code) {
+  const canManage = code && canManageClient(type, groupName);
+  const adminActionsHtml = canManage ? `
+            <div class="card-admin-actions">
+                <button class="btn-card-edit" onclick="openEditForm('${escapeJs(code)}')">
+                    <i class="fa-solid fa-pen"></i> แก้ไข
+                </button>
+                <button class="btn-card-delete" onclick="confirmDeleteReport('${escapeJs(code)}')">
+                    <i class="fa-solid fa-trash"></i> ลบ
+                </button>
+            </div>` : '';
+
+  // ทุกฟิลด์ด้านล่างมาจากฟอร์มที่ "ใครก็กรอกได้" (ไม่ต้องล็อกอิน)
+  // จึงต้อง escape ก่อนแทรกลง innerHTML ทุกครั้ง เพื่อกัน stored XSS
+  const safeTitle = escapeHtml(title);
+  const safeGroupName = escapeHtml(groupName);
+  const safeYear = escapeHtml(year);
+  const safeEventDate = escapeHtml(eventDate);
+  const safeLeader = escapeHtml(leader);
+  const safeRecorder = escapeHtml(recorder);
+  const safeCode = escapeHtml(code);
+  const safeAlt = escapeHtml(config.title);
+
+  return `
+    <div class="report-card">
+        <div class="card-header-icon" style="background:${config.color};">
+            ${config.image
+              ? `<img src="${config.image}" alt="${safeAlt}" class="card-header-img" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'fa-solid ${config.icon}'}))">`
+              : `<i class="fa-solid ${config.icon}"></i>`}
+            ${code ? `<div class="card-badge-code">${safeCode}</div>` : ''}
+            <div class="card-badge-group" style="color:${config.color}; border:1px solid ${config.color};">
+                ${safeGroupName}
+            </div>
+        </div>
+        <div class="card-body-content">
+            <div class="report-title">${safeTitle}</div>
+            <div class="report-meta">
+                <p><strong>วันที่จัด:</strong> ${safeEventDate}</p>
+                <p><strong>หัวหน้าโครงการ/กิจกรรม:</strong> ${safeLeader}</p>
+                <p><strong>ผู้บันทึกรายงาน:</strong> ${safeRecorder}</p>
+                <p><strong>ปีการศึกษา:</strong> ${safeYear}</p>
+            </div>
+            ${adminActionsHtml}
+            <button class="btn-view-report"
+                    style="background-color: ${config.color}"
+                    onclick="openPDF('${escapeJs(pdfUrl)}')">
+                <i class="fa-solid fa-file-pdf"></i> ดูรายงาน
+            </button>
+        </div>
+    </div>`;
+}
+
+function escapeJs(str) {
+  return (str || "").toString().replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+// ป้องกัน XSS: แปลงข้อความที่มาจากผู้ใช้ (ทุกคนกรอกได้ ไม่ใช่แค่แอดมิน)
+// ให้เป็น text ล้วนก่อนแทรกลง innerHTML เสมอ
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = (str ?? "").toString();
+  return div.innerHTML;
+}
+
+/* =========================
+   TAB SYSTEM
+========================= */
+function changeTab(tab) {
+  currentTab = tab;
+
+  document.querySelectorAll(".tab-item")
+    .forEach(el => el.classList.remove("active"));
+
+  document.getElementById("nav-" + tab).classList.add("active");
+
+  const zone = document.getElementById("app-content");
+  zone.innerHTML = "";
+
+  if (tab === "home") {
+    renderHomePage();
+    return;
+  }
+
+  renderSection(tab, null, 1);
+}
+
+/* =========================
+   REPORT TYPE (FORM)
+========================= */
+function changeReportType() {
+  const type = document.getElementById("reportType").value;
+  const groupInfo = GROUPS[type];
+  const select = document.getElementById("reportGroup");
+
+  select.innerHTML = groupInfo.options
+    .map(opt => `<option value="${opt}">${opt}</option>`)
+    .join("");
+}
+
+/* =========================
+   SEARCH
+========================= */
+function openSearchScreen() {
+  document.getElementById("search-screen").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
+  populateFilterGroupOptions("all");
+}
+
+function closeSearchScreen() {
+  document.getElementById("search-screen").classList.add("d-none");
+  document.body.style.overflow = "";
+}
+
+function onFilterTypeChange() {
+  const type = document.getElementById("filter-type").value;
+  populateFilterGroupOptions(type);
+  searchReports();
+}
+
+function populateFilterGroupOptions(type) {
+  const select = document.getElementById("filter-group");
+  let optionsHtml = `<option value="all">ทั้งหมด</option>`;
+
+  if (type === "all") {
+    Object.keys(GROUPS).forEach(t => {
+      optionsHtml += `<optgroup label="${GROUPS[t].title}">`;
+      GROUPS[t].options.forEach(opt => {
+        optionsHtml += `<option value="${opt}">${opt}</option>`;
+      });
+      optionsHtml += `</optgroup>`;
+    });
+  } else {
+    GROUPS[type].options.forEach(opt => {
+      optionsHtml += `<option value="${opt}">${opt}</option>`;
+    });
+  }
+
+  select.innerHTML = optionsHtml;
+}
+
+function searchReports() {
+  const keyword = document.getElementById("search-input").value.toLowerCase().trim();
+  const fYear = document.getElementById("filter-year").value;
+  const fType = document.getElementById("filter-type").value;
+  const fGroup = document.getElementById("filter-group").value;
+
+  const result = allReportsData.filter(item => {
+    const textToSearch = (
+      (item["ชื่อรายงาน"] || "") + " " +
+      (item["หัวหน้าโครงการ/กิจกรรม"] || "") + " " +
+      (item["ผู้บันทึกรายงาน"] || "")
+    ).toLowerCase();
+
+    const matchYear = (fYear === "all" || (item["ปีการศึกษา"] || "").toString().trim() == fYear);
+    const matchType = (fType === "all" || item["ประเภท"] === fType);
+    const matchGroup = (fGroup === "all" || (item["กลุ่มย่อย"] || "").toString().trim() === fGroup);
+    const matchKeyword = (keyword === "" || textToSearch.includes(keyword));
+
+    return matchKeyword && matchYear && matchType && matchGroup;
+  });
+
+  renderSearchResult(result);
+}
+
+function renderSearchResult(result) {
+  const zone = document.getElementById("search-result-container");
+
+  if (result.length === 0) {
+    zone.innerHTML = `<div class="empty-box">🔍 ไม่พบข้อมูลที่ค้นหา</div>`;
+    return;
+  }
+
+  zone.innerHTML = `<div class="cards-grid" id="search-grid"></div>`;
+  const grid = document.getElementById("search-grid");
+
+  result.forEach(item => {
+    buildCards(grid, [item], item["ประเภท"]);
+  });
+}
+
+/* =========================
+   PDF VIEW
+========================= */
+function openPDF(url) {
+  if (!url) {
+    Swal.fire({
+      icon: "warning",
+      title: "ไม่พบไฟล์รายงาน",
+      confirmButtonColor: "#2563EB"
+    });
+    return;
+  }
+
+  if (url.includes("drive.google.com")) {
+    url = url.replace("/view", "/preview");
+  }
+
+  window.open(url, "_blank");
+}
+
+/* =========================
+   FORM OPEN/CLOSE
+========================= */
+function openReportForm() {
+  // เปิดฟอร์มสำหรับ "เพิ่มรายงานใหม่" (โหมดสร้าง ไม่ใช่แก้ไข)
+  document.getElementById("reportForm").reset();
+  document.getElementById("reportEditId").value = "";
+  document.getElementById("reportFormTitle").textContent = "บันทึกรายงานใหม่";
+  document.getElementById("reportFileLabel").innerHTML = 'ไฟล์รายงาน PDF<span class="required-star">*</span>';
+  document.getElementById("btn-save").innerHTML = '<i class="fa-solid fa-floppy-disk"></i> บันทึก';
+  setReportFormFieldsDisabled(false);
+  document.getElementById("pdfPreview").innerHTML = "";
+
+  document.getElementById("reportFormModal").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
+  changeReportType();
+}
+
+function closeReportForm() {
+  document.getElementById("reportFormModal").classList.add("d-none");
+  document.body.style.overflow = "";
+  document.getElementById("reportEditId").value = "";
+  setReportFormFieldsDisabled(false);
+}
+
+function setReportFormFieldsDisabled(disabled) {
+  ["reportType", "reportGroup"].forEach(id => {
+    document.getElementById(id).disabled = disabled;
+  });
+}
+
+/* =========================
+   ADMIN: LOGIN / LOGOUT
+========================= */
+function openAdminLoginModal() {
+  if (adminSession) {
+    // ถ้าล็อกอินอยู่แล้ว ปุ่มนี้จะไม่ถูกเรียกใช้ (จะเห็นเป็น badge แทน) แต่กันไว้เผื่อกรณีพิเศษ
+    return;
+  }
+  document.getElementById("adminUsername").value = "";
+  document.getElementById("adminPassword").value = "";
+  document.getElementById("adminLoginModal").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("adminUsername").focus(), 100);
+}
+
+function closeAdminLoginModal() {
+  document.getElementById("adminLoginModal").classList.add("d-none");
+  document.body.style.overflow = "";
+}
+
+async function adminLogin() {
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value;
+  const btn = document.getElementById("btn-admin-login");
+
+  if (!username || !password) {
+    return Swal.fire({ icon: "warning", title: "กรุณากรอกข้อมูลให้ครบ", text: "กรอกทั้งชื่อผู้ใช้และรหัสผ่าน", confirmButtonColor: "#1E40AF" });
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังเข้าสู่ระบบ...';
+
+  try {
+    const response = await fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "login", username, password })
+    });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "เข้าสู่ระบบไม่สำเร็จ");
+
+    adminSession = {
+      token: result.token,
+      username: result.admin.username,
+      role: result.admin.role,
+      scopeType: result.admin.scopeType,
+      scopeGroup: result.admin.scopeGroup,
+      displayName: result.admin.displayName
+    };
+    sessionStorage.setItem("adminSession", JSON.stringify(adminSession));
+
+    closeAdminLoginModal();
+    updateAdminUI();
+
+    await Swal.fire({
+      icon: "success",
+      title: "เข้าสู่ระบบสำเร็จ",
+      text: "ยินดีต้อนรับ " + adminSession.displayName,
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    // รีเฟรชหน้าปัจจุบันเพื่อแสดงปุ่มแก้ไข/ลบตามสิทธิ์
+    if (currentTab === "home") {
+      renderHomePage();
+    } else {
+      changeTab(currentTab);
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({ icon: "error", title: "เข้าสู่ระบบไม่สำเร็จ", text: err.message, confirmButtonColor: "#1E40AF" });
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "เข้าสู่ระบบ";
+  }
+}
+
+function restoreAdminSession() {
+  try {
+    const saved = sessionStorage.getItem("adminSession");
+    if (saved) {
+      adminSession = JSON.parse(saved);
+    }
+  } catch (e) {
+    adminSession = null;
+  }
+  updateAdminUI();
+}
+
+function adminLogout() {
+  Swal.fire({
+    icon: "question",
+    title: "ออกจากระบบแอดมิน?",
+    showCancelButton: true,
+    confirmButtonText: "ออกจากระบบ",
+    cancelButtonText: "ยกเลิก",
+    confirmButtonColor: "#DC2626",
+    cancelButtonColor: "#94a3b8"
+  }).then(res => {
+    if (!res.isConfirmed) return;
+    adminSession = null;
+    sessionStorage.removeItem("adminSession");
+    updateAdminUI();
+    if (currentTab === "home") {
+      renderHomePage();
+    } else {
+      changeTab(currentTab);
+    }
+  });
+}
+
+function updateAdminUI() {
+  const area = document.getElementById("admin-area");
+  if (adminSession) {
+    const roleLabel = adminSession.role === "super"
+      ? "ผู้ดูแลระบบ"
+      : "แอดมิน: " + (adminSession.scopeGroup || "");
+    const memberBtnHtml = adminSession.role === "super"
+      ? `<button class="member-manage-btn" onclick="openMemberManagement()" aria-label="จัดการสมาชิก" title="จัดการสมาชิก">
+           <i class="fa-solid fa-users-gear"></i>
+         </button>`
+      : "";
+    area.innerHTML = `
+      ${memberBtnHtml}
+      <div class="admin-badge">
+        <i class="fa-solid fa-user-shield"></i>
+        <span>${adminSession.displayName || adminSession.username} · ${roleLabel}</span>
+        <button class="admin-logout-btn" onclick="adminLogout()" title="ออกจากระบบ" aria-label="ออกจากระบบแอดมิน">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>`;
+  } else {
+    area.innerHTML = `
+      <button class="admin-btn" id="admin-login-trigger" onclick="openAdminLoginModal()" aria-label="เข้าสู่ระบบแอดมิน" title="เข้าสู่ระบบแอดมิน">
+        <i class="fa-solid fa-user-shield"></i>
+      </button>`;
+  }
+}
+
+/* =========================
+   ADMIN: MEMBER MANAGEMENT (เฉพาะแอดมินใหญ่)
+========================= */
+let membersData = [];
+
+function openMemberManagement() {
+  if (!adminSession || adminSession.role !== "super") {
+    return Swal.fire({ icon: "warning", title: "ไม่มีสิทธิ์เข้าถึง", text: "เฉพาะแอดมินใหญ่เท่านั้นที่จัดการสมาชิกได้", confirmButtonColor: "#1E40AF" });
+  }
+  document.getElementById("memberModal").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
+  loadMembers();
+}
+
+function closeMemberManagement() {
+  document.getElementById("memberModal").classList.add("d-none");
+  document.body.style.overflow = "";
+}
+
+async function loadMembers() {
+  const container = document.getElementById("memberListContainer");
+  container.innerHTML = `<div class="member-empty"><i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...</div>`;
+
+  try {
+    const response = await fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "listAdmins", token: adminSession.token })
+    });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "โหลดข้อมูลสมาชิกไม่สำเร็จ");
+
+    membersData = result.admins || [];
+    renderMembersList();
+
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<div class="member-empty">${err.message}</div>`;
+  }
+}
+
+function renderMembersList() {
+  const container = document.getElementById("memberListContainer");
+
+  if (!membersData.length) {
+    container.innerHTML = `<div class="member-empty">ยังไม่มีสมาชิกในระบบ</div>`;
+    return;
+  }
+
+  container.innerHTML = membersData.map(m => {
+    const isSuper = m.role === "super";
+    const roleText = isSuper ? "แอดมินใหญ่" : "แอดมินกลุ่ม";
+    const scopeText = isSuper ? "" : `<div class="member-card-meta">${GROUPS[m.scopeType] ? GROUPS[m.scopeType].title : m.scopeType} · ${m.scopeGroup || ""}</div>`;
+    const safeUsername = (m.username || "").toString().replace(/"/g, "&quot;");
+
+    return `
+      <div class="member-card">
+        <div class="member-card-avatar"><i class="fa-solid ${isSuper ? "fa-user-shield" : "fa-user"}"></i></div>
+        <div class="member-card-info">
+          <div class="member-card-name">${m.displayName || m.username}</div>
+          <div class="member-card-meta">username: ${m.username}</div>
+          ${scopeText}
+          <span class="member-role-pill ${isSuper ? "role-super" : "role-group"}">${roleText}</span>
+        </div>
+        <div class="member-card-actions">
+          <button class="btn-member-edit" title="แก้ไข" onclick='openMemberForm("edit", ${JSON.stringify(m)})'>
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="btn-member-delete" title="ลบ" onclick="confirmDeleteMember('${safeUsername}')">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function openMemberForm(mode, member) {
+  document.getElementById("memberForm").reset();
+  ["memberUsername", "memberPassword", "memberDisplayName"].forEach(id => document.getElementById(id).classList.remove("is-invalid"));
+
+  if (mode === "edit" && member) {
+    document.getElementById("memberFormTitle").textContent = "แก้ไขสมาชิก: " + (member.displayName || member.username);
+    document.getElementById("memberOriginalUsername").value = member.username;
+    document.getElementById("memberUsername").value = member.username;
+    document.getElementById("memberDisplayName").value = member.displayName || "";
+    document.getElementById("memberRole").value = member.role || "group";
+    document.getElementById("memberPasswordLabel").innerHTML = 'รหัสผ่าน <span style="font-weight:400; color:#64748b;">(กรอกเฉพาะถ้าต้องการเปลี่ยน)</span>';
+
+    changeMemberRole();
+    if (member.role !== "super") {
+      document.getElementById("memberScopeType").value = member.scopeType || "workgroup";
+      changeMemberScopeType();
+      document.getElementById("memberScopeGroup").value = member.scopeGroup || "";
+    }
+  } else {
+    document.getElementById("memberFormTitle").textContent = "เพิ่มสมาชิกใหม่";
+    document.getElementById("memberOriginalUsername").value = "";
+    document.getElementById("memberRole").value = "super";
+    document.getElementById("memberPasswordLabel").innerHTML = 'รหัสผ่าน<span class="required-star">*</span>';
+    changeMemberRole();
+  }
+
+  document.getElementById("memberFormModal").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
+}
+
+function closeMemberForm() {
+  document.getElementById("memberFormModal").classList.add("d-none");
+  document.body.style.overflow = "";
+}
+
+function changeMemberRole() {
+  const role = document.getElementById("memberRole").value;
+  const scopeArea = document.getElementById("memberScopeArea");
+  if (role === "group") {
+    scopeArea.classList.remove("d-none");
+    changeMemberScopeType();
+  } else {
+    scopeArea.classList.add("d-none");
+  }
+}
+
+function changeMemberScopeType() {
+  const type = document.getElementById("memberScopeType").value;
+  const groupInfo = GROUPS[type];
+  const select = document.getElementById("memberScopeGroup");
+  select.innerHTML = groupInfo.options
+    .map(opt => `<option value="${opt}">${opt}</option>`)
+    .join("");
+}
+
+async function saveMember() {
+  const btn = document.getElementById("btn-member-save");
+  const originalUsername = document.getElementById("memberOriginalUsername").value;
+  const isEdit = !!originalUsername;
+
+  const username = document.getElementById("memberUsername").value.trim();
+  const password = document.getElementById("memberPassword").value;
+  const displayName = document.getElementById("memberDisplayName").value.trim();
+  const role = document.getElementById("memberRole").value;
+  const scopeType = document.getElementById("memberScopeType").value;
+  const scopeGroup = document.getElementById("memberScopeGroup").value;
+
+  ["memberUsername", "memberPassword"].forEach(id => document.getElementById(id).classList.remove("is-invalid"));
+
+  const missing = [];
+  if (!username) missing.push("memberUsername");
+  if (!isEdit && !password) missing.push("memberPassword");
+
+  if (missing.length > 0) {
+    missing.forEach(id => document.getElementById(id).classList.add("is-invalid"));
+    return Swal.fire({ icon: "warning", title: "ข้อมูลไม่ครบ", text: "กรุณากรอกข้อมูลในช่องที่มีกรอบสีแดงให้ครบ", confirmButtonColor: "#1E40AF" });
+  }
+
+  Swal.fire({
+    title: isEdit ? "กำลังบันทึกการแก้ไข" : "กำลังเพิ่มสมาชิก",
+    text: "กรุณารอสักครู่...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  btn.disabled = true;
+
+  try {
+    const payload = {
+      action: isEdit ? "updateAdmin" : "addAdmin",
+      token: adminSession.token,
+      username, displayName, role,
+      scopeType: role === "group" ? scopeType : "",
+      scopeGroup: role === "group" ? scopeGroup : ""
+    };
+    if (isEdit) payload.originalUsername = originalUsername;
+    if (password) payload.password = password;
+
+    const response = await fetch(GAS_WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "เกิดข้อผิดพลาด");
+
+    closeMemberForm();
+
+    await Swal.fire({
+      icon: "success",
+      title: isEdit ? "แก้ไขสมาชิกสำเร็จ" : "เพิ่มสมาชิกสำเร็จ",
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    await loadMembers();
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({ icon: "error", title: "บันทึกไม่สำเร็จ", text: err.message, confirmButtonColor: "#1E40AF" });
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function confirmDeleteMember(username) {
+  const member = membersData.find(m => (m.username || "").toString() === username.toString());
+  if (!member) {
+    return Swal.fire({ icon: "error", title: "ไม่พบสมาชิกนี้", confirmButtonColor: "#1E40AF" });
+  }
+  if (adminSession.username.toString().trim().toLowerCase() === username.toString().trim().toLowerCase()) {
+    return Swal.fire({ icon: "warning", title: "ไม่สามารถลบตัวเองได้", confirmButtonColor: "#1E40AF" });
+  }
+
+  Swal.fire({
+    icon: "warning",
+    title: "ยืนยันการลบสมาชิก?",
+    text: `"${member.displayName || member.username}" จะถูกลบออกจากระบบอย่างถาวร`,
+    showCancelButton: true,
+    confirmButtonText: "ลบสมาชิก",
+    cancelButtonText: "ยกเลิก",
+    confirmButtonColor: "#DC2626",
+    cancelButtonColor: "#94a3b8"
+  }).then(res => {
+    if (res.isConfirmed) deleteMember(username);
+  });
+}
+
+async function deleteMember(username) {
+  Swal.fire({
+    title: "กำลังลบสมาชิก",
+    text: "กรุณารอสักครู่...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  try {
+    const response = await fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "deleteAdmin", token: adminSession.token, username })
+    });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "เกิดข้อผิดพลาด");
+
+    await Swal.fire({ icon: "success", title: "ลบสมาชิกสำเร็จ", showConfirmButton: false, timer: 1500 });
+    await loadMembers();
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({ icon: "error", title: "ลบไม่สำเร็จ", text: err.message, confirmButtonColor: "#1E40AF" });
+  }
+}
+
+/* =========================
+   ADMIN: PERMISSION CHECK (ฝั่งลูกค้า - ใช้แสดงผลปุ่มเท่านั้น
+   ระบบจะตรวจสอบสิทธิ์จริงอีกครั้งที่ฝั่งเซิร์ฟเวอร์เสมอ)
+========================= */
+function canManageClient(type, groupName) {
+  if (!adminSession) return false;
+  if (adminSession.role === "super") return true;
+  return adminSession.scopeType === type && (adminSession.scopeGroup || "").toString().trim() === (groupName || "").toString().trim();
+}
+
+/* =========================
+   ADMIN: EDIT REPORT
+========================= */
+function openEditForm(code) {
+  const item = allReportsData.find(r => (r["รหัส"] || "").toString() === code.toString());
+  if (!item) {
+    return Swal.fire({ icon: "error", title: "ไม่พบข้อมูลรายงานนี้", confirmButtonColor: "#1E40AF" });
+  }
+
+  if (!canManageClient(item["ประเภท"], item["กลุ่มย่อย"])) {
+    return Swal.fire({ icon: "warning", title: "ไม่มีสิทธิ์แก้ไข", text: "คุณไม่มีสิทธิ์แก้ไขรายงานของกลุ่มนี้", confirmButtonColor: "#1E40AF" });
+  }
+
+  document.getElementById("reportForm").reset();
+  document.getElementById("reportEditId").value = item["รหัส"] || "";
+  document.getElementById("reportFormTitle").textContent = "แก้ไขรายงาน (" + (item["รหัส"] || "") + ")";
+  document.getElementById("reportFileLabel").innerHTML = 'ไฟล์รายงาน PDF <span style="font-weight:400; color:#64748b;">(แนบไฟล์ใหม่เฉพาะถ้าต้องการเปลี่ยน)</span>';
+  document.getElementById("btn-save").innerHTML = '<i class="fa-solid fa-floppy-disk"></i> บันทึกการแก้ไข';
+  document.getElementById("pdfPreview").innerHTML = "";
+
+  document.getElementById("reportType").value = item["ประเภท"] || "workgroup";
+  changeReportType();
+  document.getElementById("reportGroup").value = item["กลุ่มย่อย"] || "";
+  document.getElementById("reportYear").value = item["ปีการศึกษา"] || "";
+  document.getElementById("reportTitle").value = item["ชื่อรายงาน"] || "";
+
+  // แปลงวันที่ให้เข้ากับ input type="date" (yyyy-mm-dd)
+  const rawDate = item["วันที่จัด"];
+  document.getElementById("reportDate").value = toDateInputValue(rawDate);
+
+  document.getElementById("reportLeader").value = item["หัวหน้าโครงการ/กิจกรรม"] || "";
+  document.getElementById("reportRecorder").value = item["ผู้บันทึกรายงาน"] || "";
+
+  // แอดมินกลุ่มย่อยแก้ไขได้เฉพาะรายงานในกลุ่มตัวเอง จึงล็อกไม่ให้ย้ายประเภท/กลุ่ม
+  setReportFormFieldsDisabled(adminSession.role !== "super");
+
+  document.getElementById("reportFormModal").classList.remove("d-none");
+  document.body.style.overflow = "hidden";
+}
+
+function toDateInputValue(value) {
+  if (!value) return "";
+  try {
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return "";
+    const pad = n => n.toString().padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  } catch (e) {
+    return "";
+  }
+}
+
+async function updateReport() {
+  const btn = document.getElementById("btn-save");
+  const editId = document.getElementById("reportEditId").value;
+
+  const type = document.getElementById("reportType").value;
+  const groupName = document.getElementById("reportGroup").value;
+  const year = document.getElementById("reportYear").value.trim();
+  const title = document.getElementById("reportTitle").value.trim();
+  const eventDate = document.getElementById("reportDate").value;
+  const leader = document.getElementById("reportLeader").value.trim();
+  const recorder = document.getElementById("reportRecorder").value.trim();
+  const file = document.getElementById("reportFile").files[0];
+
+  ["reportGroup", "reportYear", "reportTitle", "reportDate", "reportLeader", "reportRecorder", "reportFile"]
+    .forEach(id => document.getElementById(id).classList.remove("is-invalid"));
+
+  const missing = [];
+  if (!groupName) missing.push("reportGroup");
+  if (!year) missing.push("reportYear");
+  if (!title) missing.push("reportTitle");
+  if (!eventDate) missing.push("reportDate");
+  if (!leader) missing.push("reportLeader");
+  if (!recorder) missing.push("reportRecorder");
+  // ไฟล์ไม่บังคับตอนแก้ไข (ไม่แนบ = ใช้ไฟล์เดิม)
+
+  if (missing.length > 0) {
+    missing.forEach(id => document.getElementById(id).classList.add("is-invalid"));
+    document.getElementById(missing[0]).scrollIntoView({ behavior: "smooth", block: "center" });
+    return Swal.fire({
+      icon: "warning",
+      title: "ข้อมูลไม่ครบ",
+      text: "กรุณากรอกข้อมูลในช่องที่มีกรอบสีแดงให้ครบ",
+      confirmButtonColor: "#1E40AF"
+    });
+  }
+
+  if (file && file.type !== "application/pdf") {
+    document.getElementById("reportFile").classList.add("is-invalid");
+    return Swal.fire({ icon: "error", title: "ไฟล์ไม่ถูกต้อง", text: "อนุญาตเฉพาะไฟล์ PDF เท่านั้น", confirmButtonColor: "#1E40AF" });
+  }
+  if (file && file.size > MAX_UPLOAD_BYTES) {
+    document.getElementById("reportFile").classList.add("is-invalid");
+    Swal.fire({
+        icon: "error",
+        title: "ไฟล์ใหญ่เกินไป",
+        text: `ไฟล์ต้องไม่เกิน ${formatMB(MAX_UPLOAD_BYTES)} MB (ไฟล์นี้ ${formatMB(file.size)} MB) กรุณาบีบอัด PDF หรือเลือกไฟล์ที่เล็กลง`,
+        confirmButtonColor: "#1E40AF"
+    });
+    return;
+  }
+
+  Swal.fire({
+    title: file ? "กำลังอัปโหลดไฟล์..." : "กำลังบันทึกการแก้ไข",
+    html: file ? "กรุณารอสักครู่... (0%)" : "กรุณารอสักครู่...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึก...';
+
+  try {
+    const payload = {
+      action: "update",
+      token: adminSession.token,
+      id: editId,
+      type, groupName, title, year, eventDate, leader, recorder
+    };
+
+    if (file) {
+      payload.uploadId = await uploadFileInChunks(file, (percent) => {
+        Swal.update({ title: "กำลังอัปโหลดไฟล์...", html: `กรุณารอสักครู่... (${percent}%)` });
+      });
+      payload.fileMimeType = file.type;
+      Swal.update({ title: "กำลังบันทึกการแก้ไข", html: "กรุณารอสักครู่..." });
+    }
+
+    const response = await fetch(GAS_WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "เกิดข้อผิดพลาด");
+
+    closeReportForm();
+
+    await Swal.fire({
+      icon: "success",
+      title: "แก้ไขรายงานสำเร็จ",
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    await loadReports();
+    if (currentTab === "home") {
+      renderHomePage();
+    } else {
+      changeTab(currentTab);
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({ icon: "error", title: "แก้ไขไม่สำเร็จ", text: getUploadErrorMessage(err, file), confirmButtonColor: "#1E40AF" });
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> บันทึกการแก้ไข';
+  }
+}
+
+/* =========================
+   ADMIN: DELETE REPORT
+========================= */
+function confirmDeleteReport(code) {
+  const item = allReportsData.find(r => (r["รหัส"] || "").toString() === code.toString());
+  if (!item) {
+    return Swal.fire({ icon: "error", title: "ไม่พบข้อมูลรายงานนี้", confirmButtonColor: "#1E40AF" });
+  }
+
+  if (!canManageClient(item["ประเภท"], item["กลุ่มย่อย"])) {
+    return Swal.fire({ icon: "warning", title: "ไม่มีสิทธิ์ลบ", text: "คุณไม่มีสิทธิ์ลบรายงานของกลุ่มนี้", confirmButtonColor: "#1E40AF" });
+  }
+
+  Swal.fire({
+    icon: "warning",
+    title: "ยืนยันการลบรายงาน?",
+    text: `"${item["ชื่อรายงาน"] || ""}" จะถูกลบออกจากระบบอย่างถาวร`,
+    showCancelButton: true,
+    confirmButtonText: "ลบรายงาน",
+    cancelButtonText: "ยกเลิก",
+    confirmButtonColor: "#DC2626",
+    cancelButtonColor: "#94a3b8"
+  }).then(res => {
+    if (res.isConfirmed) deleteReport(code);
+  });
+}
+
+async function deleteReport(code) {
+  Swal.fire({
+    title: "กำลังลบรายงาน",
+    text: "กรุณารอสักครู่...",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  try {
+    const response = await fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "delete", token: adminSession.token, id: code })
+    });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "เกิดข้อผิดพลาด");
+
+    await Swal.fire({
+      icon: "success",
+      title: "ลบรายงานสำเร็จ",
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    await loadReports();
+    if (currentTab === "home") {
+      renderHomePage();
+    } else {
+      changeTab(currentTab);
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({ icon: "error", title: "ลบไม่สำเร็จ", text: err.message, confirmButtonColor: "#1E40AF" });
+  }
+}
+
+/* =========================
+   SAVE REPORT
+========================= */
+async function saveReport() {
+  // ถ้ากำลังอยู่ในโหมดแก้ไขรายงาน ให้ไปที่ฟังก์ชันอัปเดตแทน
+  const editId = document.getElementById("reportEditId").value;
+  if (editId) {
+    return updateReport();
+  }
+
+  const btn = document.getElementById("btn-save");
+
+  const type = document.getElementById("reportType").value;
+  const groupName = document.getElementById("reportGroup").value;
+  const year = document.getElementById("reportYear").value.trim();
+  const title = document.getElementById("reportTitle").value.trim();
+  const eventDate = document.getElementById("reportDate").value;
+  const leader = document.getElementById("reportLeader").value.trim();
+  const recorder = document.getElementById("reportRecorder").value.trim();
+  const file = document.getElementById("reportFile").files[0];
+
+  // เคลียร์สถานะ error เดิมทั้งหมดก่อน
+  ["reportGroup", "reportYear", "reportTitle", "reportDate", "reportLeader", "reportRecorder", "reportFile"]
+    .forEach(id => document.getElementById(id).classList.remove("is-invalid"));
+
+  const missing = [];
+  if (!groupName) missing.push("reportGroup");
+  if (!year) missing.push("reportYear");
+  if (!title) missing.push("reportTitle");
+  if (!eventDate) missing.push("reportDate");
+  if (!leader) missing.push("reportLeader");
+  if (!recorder) missing.push("reportRecorder");
+  if (!file) missing.push("reportFile");
+
+  if (missing.length > 0) {
+    missing.forEach(id => document.getElementById(id).classList.add("is-invalid"));
+    document.getElementById(missing[0]).scrollIntoView({ behavior: "smooth", block: "center" });
+    return Swal.fire({
+      icon: "warning",
+      title: "ข้อมูลไม่ครบ",
+      text: "กรุณากรอกข้อมูลในช่องที่มีกรอบสีแดงให้ครบและแนบไฟล์ PDF",
+      confirmButtonColor: "#1E40AF"
+    });
+  }
+
+  if (file.type !== "application/pdf") {
+    document.getElementById("reportFile").classList.add("is-invalid");
+    return Swal.fire({ icon: "error", title: "ไฟล์ไม่ถูกต้อง", text: "อนุญาตเฉพาะไฟล์ PDF เท่านั้น", confirmButtonColor: "#1E40AF" });
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    document.getElementById("reportFile").classList.add("is-invalid");
+    Swal.fire({
+        icon: "error",
+        title: "ไฟล์ใหญ่เกินไป",
+        text: `ไฟล์ต้องไม่เกิน ${formatMB(MAX_UPLOAD_BYTES)} MB (ไฟล์นี้ ${formatMB(file.size)} MB) กรุณาบีบอัด PDF หรือเลือกไฟล์ที่เล็กลง`,
+        confirmButtonColor: "#1E40AF"
+    });
+    return;
+  }
+
+  Swal.fire({
+    title: "กำลังอัปโหลดไฟล์...",
+    html: "กรุณารอสักครู่... (0%)",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  btn.disabled = true;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> กำลังบันทึก...`;
+
+  try {
+    const uploadId = await uploadFileInChunks(file, (percent) => {
+      Swal.update({ title: "กำลังอัปโหลดไฟล์...", html: `กรุณารอสักครู่... (${percent}%)` });
+    });
+
+    Swal.update({ title: "กำลังบันทึกข้อมูล", html: "กรุณารอสักครู่..." });
+
+    const payload = {
+      action: "create",
+      type, groupName, title, year, eventDate, leader, recorder,
+      uploadId, fileMimeType: file.type
+    };
+
+    const response = await fetch(GAS_WEB_APP_URL, { method: "POST", body: JSON.stringify(payload) });
+    const result = await response.json();
+
+    if (result.status !== "success") throw new Error(result.message || "เกิดข้อผิดพลาด");
+
+    closeReportForm();
+
+    document.getElementById("reportForm").reset();
+    document.getElementById("pdfPreview").innerHTML = "";
+    changeReportType();
+
+    await Swal.fire({
+      icon: "success",
+      title: "บันทึกรายงานสำเร็จ",
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    await loadReports();
+    if (currentTab === "home") {
+      renderHomePage();
+    } else {
+      changeTab(currentTab);
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire({ icon: "error", title: "บันทึกไม่สำเร็จ", text: getUploadErrorMessage(err, file), confirmButtonColor: "#1E40AF" });
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> บันทึก`;
+  }
+}
+
+function convertFileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* =========================
+   UPLOAD LIMIT & CHUNKED UPLOAD
+   ไฟล์จะถูกแปลงเป็น Base64 แล้วแบ่งส่งเป็นชิ้นเล็กๆ (chunk) ไปที่ Google Apps Script
+   แทนการส่งครั้งเดียว เพื่อไม่ให้ชนข้อจำกัดขนาด POST request ของ GAS (~50MB ต่อครั้ง)
+   วิธีนี้ทำให้รองรับไฟล์ต้นฉบับได้เต็ม 50MB (แม้ Base64 จะพองเป็น ~68MB ก็ตาม)
+   เพราะแต่ละ request ที่ส่งจริงมีขนาดแค่ไม่กี่ MB ต่อครั้ง
+========================= */
+const MAX_UPLOAD_BYTES = 50 * 1024 * 1024; // 50 MB ไฟล์ต้นฉบับ
+const UPLOAD_CHUNK_SIZE = 6 * 1024 * 1024; // 6,291,456 ตัวอักษร base64 ต่อชิ้น (~4.5MB ไฟล์จริงต่อชิ้น)
+
+function formatMB(bytes) {
+  return (bytes / (1024 * 1024)).toFixed(1);
+}
+
+// แสดง error ให้เข้าใจง่ายขึ้นเมื่ออัปโหลดล้มเหลว โดยเฉพาะกรณี
+// "Failed to fetch" ซึ่งมักเกิดจากปัญหาเครือข่ายระหว่างส่งชิ้นไฟล์
+function getUploadErrorMessage(err, file) {
+  const isNetworkError = err instanceof TypeError && /fetch/i.test(err.message || "");
+  if (isNetworkError) {
+    return "การเชื่อมต่อกับเซิร์ฟเวอร์ขาดหายระหว่างอัปโหลด กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่อีกครั้ง";
+  }
+  return err.message || "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ";
+}
+
+function generateUploadId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID().replace(/-/g, "");
+  return "up" + Date.now() + Math.random().toString(36).slice(2, 10);
+}
+
+// แบ่งไฟล์เป็น Base64 แล้วส่งทีละชิ้นไปยัง GAS พร้อม retry อัตโนมัติถ้าชิ้นใดหลุด
+// onProgress(percent) จะถูกเรียกทุกครั้งที่ส่งชิ้นสำเร็จ เพื่อใช้อัปเดต progress bar
+async function uploadFileInChunks(file, onProgress) {
+  const base64 = await convertFileToBase64(file);
+  const uploadId = generateUploadId();
+  const totalChunks = Math.max(1, Math.ceil(base64.length / UPLOAD_CHUNK_SIZE));
+
+  for (let i = 0; i < totalChunks; i++) {
+    const chunkData = base64.slice(i * UPLOAD_CHUNK_SIZE, (i + 1) * UPLOAD_CHUNK_SIZE);
+    await uploadChunkWithRetry(uploadId, i, totalChunks, chunkData);
+    if (onProgress) onProgress(Math.round(((i + 1) / totalChunks) * 100));
+  }
+
+  return uploadId;
+}
+
+async function uploadChunkWithRetry(uploadId, chunkIndex, totalChunks, chunkData, attempt) {
+  attempt = attempt || 1;
+  try {
+    const response = await fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      body: JSON.stringify({ action: "uploadChunk", uploadId, chunkIndex, totalChunks, chunkData })
+    });
+    const result = await response.json();
+    if (result.status !== "success") {
+      throw new Error(result.message || `อัปโหลดชิ้นที่ ${chunkIndex + 1}/${totalChunks} ไม่สำเร็จ`);
+    }
+  } catch (err) {
+    if (attempt < 3) {
+      await new Promise(r => setTimeout(r, 800 * attempt));
+      return uploadChunkWithRetry(uploadId, chunkIndex, totalChunks, chunkData, attempt + 1);
+    }
+    throw err;
+  }
+}
+
+
+function previewPDFName() {
+  const file = document.getElementById("reportFile").files[0];
+  const preview = document.getElementById("pdfPreview");
+
+  if (!file) {
+    preview.innerHTML = "";
+    return;
+  }
+
+  preview.innerHTML = `
+    <i class="fa-solid fa-file-pdf text-danger"></i>
+    ${file.name}
+  `;
+}
+
+/* =========================
+   LINE IN-APP BROWSER NOTICE
+========================= */
+function hideNoticePermanently() {
+  document.getElementById('line-notice').style.display = 'none';
+  sessionStorage.setItem('hideLineNotice', 'true');
+}
+
+function openInBrowser() {
+  const url = window.location.href;
+  const isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  if (isAndroid) {
+    window.location.href = "intent://" + url.replace(/^https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+  } else if (isIOS) {
+    alert("บน iPhone/iPad: กรุณากดปุ่ม 3 จุด (⋯) ที่มุมขวาบน แล้วเลือก 'เปิดใน Safari' เพื่อใช้งานฟังก์ชันเต็มรูปแบบครับ");
+  } else {
+    window.open(url, '_blank');
+  }
+}
+
+function checkLineBrowser() {
+  const ua = navigator.userAgent.toLowerCase();
+  const isLine = ua.indexOf("line") > -1;
+  if (isLine) {
+    document.getElementById("line-notice").style.display = "block";
+  }
+}
+
+</script>
+</html>
