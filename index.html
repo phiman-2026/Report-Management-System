@@ -1378,7 +1378,7 @@ select:focus-visible {
       <label class="filter-label">ประเภท</label>
       <select id="filter-type" onchange="onFilterTypeChange()" class="filter-select">
         <option value="all">ทั้งหมด</option>
-        <option value="workgroup">กลุ่มงาน</option>
+        <option value="workgroup">กลุ่มบริหาร</option>
         <option value="subject">กลุ่มสาระ</option>
         <option value="special">ห้องเรียนพิเศษ</option>
       </select>
@@ -1408,7 +1408,7 @@ select:focus-visible {
           <div style="flex: 1 1 200px;">
             <label class="form-label">ประเภทรายงาน</label>
             <select id="reportType" class="form-select" onchange="changeReportType()">
-              <option value="workgroup">กลุ่มงาน</option>
+              <option value="workgroup">กลุ่มบริหาร</option>
               <option value="subject">กลุ่มสาระ</option>
               <option value="special">ห้องเรียนพิเศษ</option>
             </select>
@@ -1541,7 +1541,7 @@ select:focus-visible {
           <div class="mt-3">
             <label class="form-label">ประเภทกลุ่ม<span class="required-star">*</span></label>
             <select id="memberScopeType" class="form-select" onchange="changeMemberScopeType()">
-              <option value="workgroup">กลุ่มงาน</option>
+              <option value="workgroup">กลุ่มบริหาร</option>
               <option value="subject">กลุ่มสาระ</option>
               <option value="special">ห้องเรียนพิเศษ</option>
             </select>
@@ -1565,7 +1565,7 @@ select:focus-visible {
     <span class="tab-icon-wrap"><i class="fa-solid fa-house"></i></span><span class="tab-label">หน้าแรก</span>
   </button>
   <button class="tab-item" id="nav-workgroup" onclick="changeTab('workgroup')">
-    <span class="tab-icon-wrap"><i class="fa-solid fa-building"></i></span><span class="tab-label">กลุ่มงาน</span>
+    <span class="tab-icon-wrap"><i class="fa-solid fa-building"></i></span><span class="tab-label">กลุ่มบริหาร</span>
   </button>
   <button class="tab-item" id="nav-subject" onclick="changeTab('subject')">
     <span class="tab-icon-wrap"><i class="fa-solid fa-book"></i></span><span class="tab-label">กลุ่มสาระ</span>
@@ -1599,7 +1599,7 @@ const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzWMBvPki3rsdtb
 // =========================
 const GROUPS = {
   workgroup: {
-    title: "กลุ่มงาน",
+    title: "กลุ่มบริหาร",
     icon: "fa-building",
     color: "#1E40AF",
     image: "https://img2.pic.in.th/5eeb98ad-357b-4e6b-b481-c2bd56b2d4e7.png",
